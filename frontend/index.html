@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>KNTU Sports Ticket Reservation System</title>
+    <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+
+    <aside class="sidebar">
+        <div>
+            <div class="brand">
+                <div class="brand-logo">K</div>
+                <div>
+                    <h1>KNTU Sports</h1>
+                    <p>Reservation Dashboard</p>
+                </div>
+            </div>
+
+            <nav class="nav">
+                <button class="nav-link active" onclick="showSection('home', this)">Home</button>
+                <button class="nav-link" onclick="showSection('auth', this)">Authentication</button>
+                <button class="nav-link" onclick="showSection('profile', this)">Profile</button>
+                <button class="nav-link" onclick="showSection('wallet', this)">Wallet</button>
+                <button class="nav-link" onclick="showSection('tickets', this)">Tickets</button>
+                <button class="nav-link" onclick="showSection('booking', this)">Booking</button>
+                <button class="nav-link" onclick="showSection('history', this)">History</button>
+                <button class="nav-link" onclick="showSection('support', this)">Support</button>
+                <button class="nav-link" onclick="showSection('elastic', this)">ElasticSearch</button>
+            </nav>
+        </div>
+
+        <div class="user-panel">
+            <p class="panel-label">Logged in as</p>
+            <h3 id="sidebarUserName">Guest User</h3>
+            <span id="sidebarUserRole">Not logged in</span>
+            <small id="sidebarUserEmail">Login with password + OTP or create an account</small>
+            <small id="sidebarWalletBalance">Wallet: -</small>
+            <button id="logoutButton" class="logout-btn" onclick="logoutUser()">Logout</button>
+        </div>
+
+        <div class="sidebar-footer">
+            <p>Database Project</p>
+            <span>K. N. Toosi University of Technology</span>
+        </div>
+    </aside>
+
+    <main class="main-content">
+
+        <!-- HOME -->
+        <section id="home" class="page-section active-section">
+            <div class="hero">
+                <span class="hero-badge">Database project</span>
+                <h1>KNTU sports Ticket Reservation System</h1>
+                <p class="hero-subtitle">Database project</p>
+            </div>
+
+            <div class="home-status-grid">
+                <section class="home-status-card">
+                    <span>Current User</span>
+                    <h3 id="homeUserName">Guest User</h3>
+                    <p id="homeUserRole">Please login or create an account to use authenticated features.</p>
+                </section>
+
+                <section class="home-status-card accent-card">
+                    <span>Smart Search</span>
+                    <h3>Elasticsearch Autocomplete</h3>
+                    <p>Search tickets by team, venue, city, sport, league, or facilities.</p>
+                </section>
+            </div>
+
+            <div class="home-image-card">
+                <img src="assets/home-image.png" alt="Home Design" class="home-image" />
+                <p class="home-caption">Design by Arya &amp; Mohamad</p>
+            </div>
+        </section>
+
+        <!-- AUTH -->
+        <section id="auth" class="page-section">
+            <div class="section-title">
+                <h2>Authentication</h2>
+                <p>Create account or login using OTP.</p>
+            </div>
+
+            <div class="grid three">
+                <section class="card">
+                    <div class="card-header">
+                        <div>
+                            <h3>Sign Up</h3>
+                            <p>Create a new spectator account.</p>
+                        </div>
+                        <span class="tag">Public</span>
+                    </div>
+
+                    <label>First Name</label>
+                    <input id="signupFirstName" type="text" placeholder="Test" />
+
+                    <label>Last Name</label>
+                    <input id="signupLastName" type="text" placeholder="User" />
+
+                    <label>Email</label>
+                    <input id="signupEmail" type="email" placeholder="testuser200@example.com" />
+
+                    <label>Phone</label>
+                    <input id="signupPhone" type="text" placeholder="09120000200" />
+
+                    <label>Password</label>
+                    <input id="signupPassword" type="password" placeholder="Test12345" />
+
+                    <label>City</label>
+                    <select id="signupCityId" class="select-input">
+                        <option value="">Select city</option>
+                    </select>
+
+                    <button onclick="signup()">Create Account</button>
+
+                    <div id="signupResult" class="result-box"></div>
+                </section>
+
+                <section class="card">
+                    <div class="card-header">
+                        <div>
+                            <h3>Secure Login</h3>
+                            <p>First verify password, then enter the OTP code.</p>
+                        </div>
+                        <span class="tag success">Password + OTP</span>
+                    </div>
+
+                    <label>Email or Phone</label>
+                    <input id="passwordLoginIdentifier" type="text" placeholder="testuser200@example.com" />
+
+                    <label>Password</label>
+                    <input id="passwordLoginPassword" type="password" placeholder="Test12345" />
+
+                    <button onclick="requestPasswordLoginOtp()">Verify Password & Send OTP</button>
+
+                    <label>OTP Code</label>
+                    <input id="passwordLoginOtp" type="text" placeholder="Enter OTP after password is verified" />
+
+                    <button onclick="verifyPasswordLoginOtp()">Verify OTP & Login</button>
+
+                    <div id="passwordOtpLoginResult" class="result-box"></div>
+                </section>
+            </div>
+        </section>
+
+        <!-- PROFILE -->
+        <section id="profile" class="page-section">
+            <div class="section-title">
+                <h2>Account Management</h2>
+                <p>View and update your profile information.</p>
+            </div>
+
+            <div class="grid three">
+                <section class="card">
+                    <div class="card-header">
+                        <div>
+                            <h3>My Profile</h3>
+                            <p>Load current user information using JWT token.</p>
+                        </div>
+                        <span class="tag success">Profile</span>
+                    </div>
+
+                    <button onclick="getMyProfile()">Load My Profile</button>
+
+                    <div id="profileResult" class="result-box"></div>
+                </section>
+
+                <section class="card wallet-balance-card">
+                    <div class="card-header">
+                        <div>
+                            <h3>Wallet Balance</h3>
+                            <p>Shows the current wallet balance for the logged-in user.</p>
+                        </div>
+                        <span class="tag success">Wallet</span>
+                    </div>
+
+                    <div class="wallet-balance-value" id="profileWalletBalance">-</div>
+                    <p class="hint">Use the Wallet section to deposit money.</p>
+
+                    <button onclick="loadWalletBalance('profileWalletResult')">Refresh Balance</button>
+
+                    <div id="profileWalletResult" class="result-box"></div>
+                </section>
+
+                <section class="card">
+                    <div class="card-header">
+                        <div>
+                            <h3>Update Profile</h3>
+                            <p>Update name, phone number, or city.</p>
+                        </div>
+                        <span class="tag warning">Update</span>
+                    </div>
+
+                    <label>First Name</label>
+                    <input id="updateFirstName" type="text" placeholder="Ali" />
+
+                    <label>Last Name</label>
+                    <input id="updateLastName" type="text" placeholder="Ahmadi" />
+
+                    <label>Phone</label>
+                    <input id="updatePhone" type="text" placeholder="09121111111" />
+
+                    <label>City</label>
+                    <select id="updateCityId" class="select-input">
+                        <option value="">Select city</option>
+                    </select>
+
+                    <button onclick="updateMyProfile()">Update Profile</button>
+
+                    <div id="updateProfileResult" class="result-box"></div>
+                </section>
+            </div>
+        </section>
+
+        <!-- WALLET -->
+        <section id="wallet" class="page-section">
+            <div class="section-title">
+                <h2>Wallet</h2>
+                <p>View wallet balance, deposit money, and use wallet for reservation payments.</p>
+            </div>
+
+            <div class="grid three">
+                <section class="card wallet-balance-card">
+                    <div class="card-header">
+                        <div>
+                            <h3>My Wallet</h3>
+                            <p>Load current wallet balance and latest transactions.</p>
+                        </div>
+                        <span class="tag success">Balance</span>
+                    </div>
+
+                    <div class="wallet-balance-value" id="walletPageBalance">-</div>
+
+                    <button onclick="loadWalletBalance('walletResult')">Load Wallet</button>
+
+                    <div id="walletResult" class="result-box"></div>
+                </section>
+
+                <section class="card">
+                    <div class="card-header">
+                        <div>
+                            <h3>Deposit</h3>
+                            <p>Add money to your wallet balance.</p>
+                        </div>
+                        <span class="tag warning">Deposit</span>
+                    </div>
+
+                    <label>Amount</label>
+                    <input id="walletDepositAmount" type="number" placeholder="1000000" />
+
+                    <label>Description</label>
+                    <input id="walletDepositDescription" type="text" value="User wallet deposit" />
+
+                    <button onclick="depositWallet()">Deposit to Wallet</button>
+
+                    <div id="walletDepositResult" class="result-box"></div>
+                </section>
+
+                <section class="card">
+                    <div class="card-header">
+                        <div>
+                            <h3>Transactions</h3>
+                            <p>View wallet transaction history.</p>
+                        </div>
+                        <span class="tag">History</span>
+                    </div>
+
+                    <button onclick="loadWalletTransactions()">Load Transactions</button>
+
+                    <div id="walletTransactionsResult" class="result-box"></div>
+                </section>
+            </div>
+        </section>
+
+        <!-- TICKETS -->
+        <section id="tickets" class="page-section">
+            <div class="section-title">
+                <h2>Ticket Discovery</h2>
+                <p>Search tickets and view ticket details.</p>
+            </div>
+
+            <div class="grid two">
+                <section class="card">
+                    <div class="card-header">
+                        <div>
+                            <h3>Search Tickets</h3>
+                            <p>Filter tickets by city and sport.</p>
+                        </div>
+                        <span class="tag">PostgreSQL</span>
+                    </div>
+
+                    <label>City</label>
+                    <select id="cityId" class="select-input">
+                        <option value="">All cities</option>
+                    </select>
+
+                    <label>Sport</label>
+                    <select id="sportId" class="select-input">
+                        <option value="">All sports</option>
+                    </select>
+
+                    <label>Seat Category</label>
+                    <select id="seatCategoryId" class="select-input">
+                        <option value="">All seat categories</option>
+                    </select>
+
+                    <div class="filter-grid">
+                        <div>
+                            <label>Min Price</label>
+                            <input id="minPrice" type="number" placeholder="500000" />
+                        </div>
+                        <div>
+                            <label>Max Price</label>
+                            <input id="maxPrice" type="number" placeholder="2500000" />
+                        </div>
+                    </div>
+
+                    <div class="filter-grid">
+                        <div>
+                            <label>Match Date</label>
+                            <input id="matchDate" type="date" />
+                        </div>
+                        <div>
+                            <label>Minimum Capacity</label>
+                            <input id="minCapacity" type="number" placeholder="1" />
+                        </div>
+                    </div>
+
+                    <button onclick="searchTickets()">Search Tickets</button>
+
+                    <div id="ticketsResult" class="result-box"></div>
+                </section>
+
+                <section class="card">
+                    <div class="card-header">
+                        <div>
+                            <h3>Ticket Detail</h3>
+                            <p>View full ticket and match information.</p>
+                        </div>
+                        <span class="tag">Detail</span>
+                    </div>
+
+                    <label>Ticket ID</label>
+                    <input id="ticketId" type="number" placeholder="11000000" />
+
+                    <button onclick="getTicketDetail()">Get Detail</button>
+
+                    <div id="ticketDetailResult" class="result-box"></div>
+                </section>
+            </div>
+        </section>
+
+        <!-- BOOKING -->
+        <section id="booking" class="page-section">
+            <div class="section-title">
+                <h2>Booking Flow</h2>
+                <p>Reserve tickets, make payments, and request refunds.</p>
+            </div>
+
+            <div class="grid three">
+                <section class="card">
+                    <div class="card-header">
+                        <div>
+                            <h3>Create Reservation</h3>
+                            <p>Reserve a ticket before payment.</p>
+                        </div>
+                        <span class="tag warning">Auth</span>
+                    </div>
+
+                    <label>Ticket ID</label>
+                    <input id="reservationTicketId" type="number" placeholder="11000000" />
+
+                    <label>Quantity</label>
+                    <input id="quantity" type="number" value="1" />
+
+                    <button onclick="createReservation()">Reserve</button>
+
+                    <div id="reservationResult" class="result-box"></div>
+                </section>
+
+                <section class="card">
+                    <div class="card-header">
+                        <div>
+                            <h3>Change Ticket / Seat</h3>
+                            <p>Change an unpaid reservation to another ticket for the same match.</p>
+                        </div>
+                        <span class="tag warning">Change Seat</span>
+                    </div>
+
+                    <label>Reservation ID</label>
+                    <input id="changeReservationId" type="number" placeholder="15000016" />
+
+                    <label>New Ticket ID</label>
+                    <input id="changeNewTicketId" type="number" placeholder="11000004" />
+
+                    <button onclick="changeReservationTicket()">Change Ticket</button>
+
+                    <div id="changeTicketResult" class="result-box"></div>
+                </section>
+
+                <section class="card">
+                    <div class="card-header">
+                        <div>
+                            <h3>Create Payment</h3>
+                            <p>Pay for an active reservation.</p>
+                        </div>
+                        <span class="tag success">Payment</span>
+                    </div>
+
+                    <label>Reservation ID</label>
+                    <input id="paymentReservationId" type="number" placeholder="15000015" />
+
+                    <label>Payment Method</label>
+                    <select id="paymentMethod" class="select-input">
+                        <option value="card">Card</option>
+                        <option value="wallet">Wallet</option>
+                    </select>
+                    <p class="hint">If Wallet is selected, the amount is deducted from wallet balance.</p>
+
+                    <button onclick="createPayment()">Pay Now</button>
+
+                    <div id="paymentResult" class="result-box"></div>
+                </section>
+
+                <section class="card">
+                    <div class="card-header">
+                        <div>
+                            <h3>Create Refund</h3>
+                            <p>Refund a successful payment.</p>
+                        </div>
+                        <span class="tag danger">Refund</span>
+                    </div>
+
+                    <label>Payment ID</label>
+                    <input id="refundPaymentId" type="number" placeholder="17000013" />
+
+                    <label>Reason</label>
+                    <input id="refundReason" type="text" value="User requested refund" />
+
+                    <button onclick="createRefund()">Refund</button>
+
+                    <div id="refundResult" class="result-box"></div>
+                </section>
+            </div>
+        </section>
+
+        <!-- HISTORY -->
+        <section id="history" class="page-section">
+            <div class="section-title">
+                <h2>Reservation & Purchase History</h2>
+                <p>View all reservations, payments, cancellations, and refunds.</p>
+            </div>
+
+            <div class="grid one">
+                <section class="card">
+                    <div class="card-header">
+                        <div>
+                            <h3>My History</h3>
+                            <p>Shows complete booking and payment history for the logged-in user.</p>
+                        </div>
+                        <span class="tag success">History</span>
+                    </div>
+
+                    <button onclick="getReservationHistory()">Load My History</button>
+
+                    <div id="historyResult" class="result-box large"></div>
+                </section>
+            </div>
+        </section>
+
+        <!-- SUPPORT -->
+        <section id="support" class="page-section">
+            <div class="section-title">
+                <h2>Reports & Support</h2>
+                <p>Create reports and manage support requests.</p>
+            </div>
+
+            <div class="grid three">
+                <section class="card">
+                    <div class="card-header">
+                        <div>
+                            <h3>Create Report</h3>
+                            <p>Submit a ticket or refund issue.</p>
+                        </div>
+                        <span class="tag">Report</span>
+                    </div>
+
+                    <label>Ticket ID</label>
+                    <input id="reportTicketId" type="number" placeholder="11000000" />
+
+                    <label>Reservation ID</label>
+                    <input id="reportReservationId" type="number" placeholder="15000015" />
+
+                    <label>Report Type</label>
+                    <input id="reportType" type="text" value="refund_issue" />
+
+                    <label>Description</label>
+                    <input id="reportDescription" type="text" value="I want to check my refund status." />
+
+                    <button onclick="createReport()">Create Report</button>
+
+                    <div id="createReportResult" class="result-box"></div>
+                </section>
+
+                <section class="card">
+                    <div class="card-header">
+                        <div>
+                            <h3>My Reports</h3>
+                            <p>View reports created by the logged-in user.</p>
+                        </div>
+                        <span class="tag">User</span>
+                    </div>
+
+                    <button onclick="getMyReports()">Load My Reports</button>
+
+                    <div id="myReportsResult" class="result-box"></div>
+                </section>
+
+                <section class="card">
+                    <div class="card-header">
+                        <div>
+                            <h3>Support Panel</h3>
+                            <p>Only support users can access this panel.</p>
+                        </div>
+                        <span class="tag danger">Support</span>
+                    </div>
+
+                    <p class="hint">Login with support1@example.com first.</p>
+
+                    <button onclick="getSupportReports()">Load All Reports</button>
+
+                    <label>Report ID</label>
+                    <input id="supportReportId" type="number" placeholder="20000011" />
+
+                    <label>New Status</label>
+                    <input id="supportReportStatus" type="text" value="resolved" />
+
+                    <button onclick="updateSupportReport()">Update Report Status</button>
+
+                    <div id="supportResult" class="result-box"></div>
+                </section>
+
+                <section class="card">
+                    <div class="card-header">
+                        <div>
+                            <h3>Support Reservations</h3>
+                            <p>Review, filter, and update user reservations.</p>
+                        </div>
+                        <span class="tag danger">Reservation Admin</span>
+                    </div>
+
+                    <p class="hint">Login with support1@example.com first.</p>
+
+                    <label>Filter by Status</label>
+                    <select id="supportReservationStatusFilter" class="select-input">
+                        <option value="">All reservations</option>
+                        <option value="reserved">Reserved</option>
+                        <option value="paid">Paid</option>
+                        <option value="cancelled">Cancelled</option>
+                        <option value="expired">Expired</option>
+                    </select>
+
+                    <button onclick="getSupportReservations()">Load Reservations</button>
+
+                    <label>Reservation ID</label>
+                    <input id="supportReservationId" type="number" placeholder="15000015" />
+
+                    <label>New Status</label>
+                    <select id="supportReservationNewStatus" class="select-input">
+                        <option value="reserved">Reserved</option>
+                        <option value="paid">Paid</option>
+                        <option value="cancelled">Cancelled</option>
+                        <option value="expired">Expired</option>
+                    </select>
+
+                    <label>Reason</label>
+                    <input id="supportReservationReason" type="text" value="Updated by support" />
+
+                    <button onclick="updateSupportReservationStatus()">Update Reservation Status</button>
+
+                    <div id="supportReservationResult" class="result-box large"></div>
+                </section>
+            </div>
+        </section>
+
+        <!-- ELASTIC -->
+        <section id="elastic" class="page-section">
+            <div class="section-title">
+                <h2>Elasticsearch Search</h2>
+                <p>Advanced search by team, venue, city, sport, and facilities.</p>
+            </div>
+
+            <div class="grid one">
+                <section class="card">
+                    <div class="card-header">
+                        <div>
+                            <h3>Elastic Ticket Search</h3>
+                            <p>Index PostgreSQL tickets and search them.</p>
+                        </div>
+                        <span class="tag elastic">Elastic</span>
+                    </div>
+
+                    <button onclick="indexTicketsElastic()">Index Tickets</button>
+
+                    <label>Search Text</label>
+                    <div class="autocomplete-wrapper">
+                        <input id="elasticSearchText" type="text" placeholder="Esteghlal, Azadi, Tehran..."
+                            autocomplete="off" oninput="handleElasticAutocomplete()" />
+                        <div id="elasticSuggestions" class="autocomplete-list"></div>
+                    </div>
+
+                    <div class="search-chips">
+                        <button type="button" class="chip-btn"
+                            onclick="useElasticSuggestion('Esteghlal')">Esteghlal</button>
+                        <button type="button" class="chip-btn" onclick="useElasticSuggestion('Azadi')">Azadi</button>
+                        <button type="button" class="chip-btn" onclick="useElasticSuggestion('Tehran')">Tehran</button>
+                        <button type="button" class="chip-btn" onclick="useElasticSuggestion('VIP')">VIP</button>
+                    </div>
+
+                    <button onclick="searchTicketsElastic()">Search with Elasticsearch</button>
+
+                    <div id="elasticSearchResult" class="result-box large"></div>
+                </section>
+            </div>
+        </section>
+
+    </main>
+
+    <script src="app.js"></script>
+</body>
+
+</html>
